@@ -3,124 +3,79 @@ import sys
 import time
 import hashlib
 import requests
-import shutil
 
 # Couleurs
 P = "\033[35m" ; G = "\033[32m" ; Y = "\033[33m" 
 C = "\033[36m" ; R = "\033[31m" ; W = "\033[0m"
-BLINK = "\033[5m"
+B = "\033[34m" # Bleu pour le style SMM
+V = "\033[0;32m" # Vert clair
 
 DB_URL = "https://raw.githubusercontent.com/elinoj89-dotcom/INSTALL/refs/heads/main/database.txt"
-SESSION_PATH = os.path.join(os.path.expanduser("~"), "insta-manager-pro/sessions")
 
 def get_hwid():
-    """Génère l'identifiant unique du téléphone"""
     id_str = os.popen('getprop ro.serialno').read().strip()
     if not id_str:
         id_str = os.popen('getprop ro.product.model').read().strip()
     return hashlib.md5(id_str.encode()).hexdigest().upper()[:15]
 
-def show_others():
-    """Affiche les tarifs et les infos de contact (Option 9)"""
-    os.system('clear')
-    print(f"{P}╔═══════════════════════════════════════════╗")
-    print(f"║            INFOS & TARIFS {Y}SMM{P}             ║")
-    print(f"╚═══════════════════════════════════════════╝{W}")
-    
-    print(f"\n{Y}[💳] NOS TARIFS D'ACTIVATION :{W}")
-    print(f" ├─ Hebdomadaire : {G}5,000 Ar{W}")
-    print(f" ├─ Mensuel      : {G}15,000 Ar{W}")
-    print(f" └─ À vie (VIP)  : {G}50,000 Ar{W}")
-    
-    print(f"\n{C}[👤] CONTACT DÉVELOPPEUR :{W}")
-    print(f" ├─ Facebook : {C}Randriamihary Jean Elino{W}")
-    print(f" └─ WhatsApp : {G}+261 XX XX XXX XX{W}") # Remplace par ton vrai numéro
-    
-    print(f"\n{R}[⚠️] RÈGLES :{W}")
-    print(f" └─ Pas de remboursement après activation.")
-    
-    input(f"\n{P}[ Appuyez sur Entrée pour revenir ]{W}")
-    show_menu()
-
-def copy_key():
-    """Affiche la clé pour faciliter la copie (Option 7)"""
-    os.system('clear')
-    my_key = get_hwid()
-    print(f"{P}╔═══════════════════════════════════════════╗")
-    print(f"║           RÉCUPÉRATION DE CLÉ             ║")
-    print(f"╚═══════════════════════════════════════════╝{W}")
-    print(f"\n{Y}[!] Voici votre clé unique :{W}")
-    print(f"\n{G}>> {W}{my_key}{G} <<{W}")
-    print(f"\n{C}[i] Maintenez votre doigt sur la clé pour la copier")
-    print(f"    puis envoyez-la au développeur.{W}")
-    
-    input(f"\n{P}[ Appuyez sur Entrée pour revenir ]{W}")
-    show_menu()
-
-def list_accounts():
-    """Affiche les comptes enregistrés (Option 4)"""
-    os.system('clear')
-    print(f"{P}╔═══════════════════════════════════════════╗\n║           LISTE DES COMPTES SMM           ║\n╚═══════════════════════════════════════════╝{W}\n")
-    if not os.path.exists(SESSION_PATH) or not os.listdir(SESSION_PATH):
-        print(f"{R}[!] Aucun compte trouvé.{W}")
-    else:
-        for i, f in enumerate(os.listdir(SESSION_PATH), 1):
-            print(f"{Y}[{i}]{W} {f.replace('.json','')}")
-    input(f"\n{G}[ Entrée pour revenir ]{W}")
-    show_menu()
-
-def delete_account():
-    """Supprime un compte (Option 5)"""
-    os.system('clear')
-    print(f"{R}╔═══════════════════════════════════════════╗\n║         SUPPRIMER UN COMPTE SMM           ║\n╚═══════════════════════════════════════════╝{W}\n")
-    if os.path.exists(SESSION_PATH) and os.listdir(SESSION_PATH):
-        files = os.listdir(SESSION_PATH)
-        for i, f in enumerate(files, 1):
-            print(f"{Y}[{i}]{W} {f}")
-        c = input(f"\n{C}[➤] Numéro à supprimer : {W}")
-        try:
-            os.remove(os.path.join(SESSION_PATH, files[int(c)-1]))
-            print(f"{G}[✔] Compte supprimé avec succès !{W}")
-        except: print(f"{R}[✘] Erreur.{W}")
-    else: print(f"{R}[!] Liste vide.{W}")
-    time.sleep(2)
-    show_menu()
-
 def show_menu():
-    """Menu principal après activation"""
     os.system('clear')
+    # --- LOGO SMM EN BLEU ---
+    print(f"""{B}
+  ██████  ███    ███ ███    ███ 
+ ██       ████  ████ ████  ████ 
+   ████   ██ ████ ██ ██ ████ ██ 
+       ██ ██  ██  ██ ██  ██  ██ 
+  ██████  ██      ██ ██      ██ 
+    {W}""")
+    
+    # En-tête du Tool
+    print(f"{P}┌───────────────────────────────────────────┐")
+    print(f"│ {Y}[*] TOOL NAME   >> {B}SMM{P}                 │")
+    print(f"│ {Y}[*] DEVELOPPER  >> {G}ELINO{P}               │")
+    print(f"│ {Y}[*] INTERFACE   >> {C}Web Scraping{P}        │")
+    print(f"│ {Y}[*] VERSION     >> {G}5.5{P}                 │")
+    print(f"└───────────────────────────────────────────┘{W}")
+    
+    # Barre de statut Telegram (Style capture)
     print(f"{P}╔═══════════════════════════════════════════╗")
-    print(f"║   {Y}[*] TOOL NAME   >> {BLINK}SMM{W}{P}               ║")
-    print(f"║   {Y}[*] DEVELOPPER  >> ELINO{P}             ║")
-    print(f"║   {Y}[*] VERSION     >> 5.5{P}               ║")
+    print(f"║       {G}Un Telegram autorisé(s)             {P}║")
     print(f"╚═══════════════════════════════════════════╝{W}")
-    
-    print(f"\n{G}[1] Démarrer le Bot")
-    print(f"{G}[4] Listes des comptes")
-    print(f"{G}[5] Supprimer un compte")
-    print(f"{G}[7] Récupérer ma clé")
-    print(f"{G}[9] Autres (Tarifs & Contact)")
-    print(f"{R}[0] Quitter{W}")
-    
-    choice = input(f"\n{C}[➤] Choix : {W}")
-    
-    if choice == "1": 
+
+    # Liste complète des options
+    print(f"{P}┌───────────────────────────────────────────┐")
+    print(f"│ {V}[1] Démarrer le Bot                       {P}│")
+    print(f"│ {V}[2] Se connecter aux comptes              {P}│")
+    print(f"│ {V}[3] Déconnexion T/G                       {P}│")
+    print(f"│ {V}[4] Listes des comptes                    {P}│")
+    print(f"│ {V}[5] Supprimer un compte                   {P}│")
+    print(f"│ {V}[6] Corbeille                             {P}│")
+    print(f"│ {V}[7] Récupérer ma clé                      {P}│")
+    print(f"│ {V}[8] Mettre à jour                         {P}│")
+    print(f"│ {V}[9] Autres                                {P}│")
+    print(f"│ {R}[0] Quitter                               {P}│")
+    print(f"└───────────────────────────────────────────┘{W}")
+
+    choice = input(f"\n{B}[➤] Choix : {W}")
+
+    # Logique des choix
+    if choice == "1":
         os.system('python ~/insta-manager-pro/update.py')
-    elif choice == "4": 
-        list_accounts()
-    elif choice == "5": 
-        delete_account()
-    elif choice == "7":
-        copy_key()
-    elif choice == "9":
-        show_others()
-    elif choice == "0": 
+    elif choice == "2":
+        print(f"\n{Y}[*] Redirection vers connexion...{W}")
+        time.sleep(1); show_menu()
+    elif choice == "3":
+        print(f"\n{R}[*] Déconnexion en cours...{W}")
+        time.sleep(1); show_menu()
+    elif choice == "8":
+        os.system('python ~/insta-manager-pro/update.py')
+    elif choice == "0":
         sys.exit()
-    else: 
-        show_menu()
+    else:
+        # Relance pour les options non encore codées ou retour menu
+        time.sleep(1); show_menu()
 
 def main():
-    """Point d'entrée : Vérification de la licence"""
     os.system('clear')
     my_key = get_hwid()
     try:
@@ -129,13 +84,10 @@ def main():
             show_menu()
         else:
             print(f"{R}┌─────────────────── ACCÈS REFUSÉ ───────────────────┐")
-            print(f"│ {R}🚫 APPAREIL NON ENREGISTRÉ                        │")
-            print(f"│                                                   │")
             print(f"│ {Y}🔑 Votre clé : {W}{my_key}                │")
-            print(f"│ {C}💬 Contactez Randriamihary Jean Elino            │")
             print(f"└─────────────────────────────────────────────────────┘{W}")
-    except: 
-        print(f"{R}Erreur réseau. Vérifiez votre connexion.{W}")
+    except:
+        print(f"{R}Erreur réseau.{W}")
 
 if __name__ == "__main__":
     main()
