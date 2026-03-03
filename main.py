@@ -4,13 +4,14 @@ import time
 import hashlib
 import requests
 
-# Couleurs pour le style
-G = "\033[32m" # Vert
-R = "\033[31m" # Rouge
-W = "\033[0m"  # Blanc
-Y = "\033[33m" # Jaune
-P = "\033[35m" # Violet
-C = "\033[36m" # Cyan
+# Définition des couleurs
+G = "\033[32m"      # Vert
+R = "\033[31m"      # Rouge
+W = "\033[0m"       # Blanc (Reset)
+Y = "\033[33m"      # Jaune
+P = "\033[35m"      # Violet
+C = "\033[36m"      # Cyan
+BLINK = "\033[5m"   # Clignotement
 
 # Ton lien d'activation validé
 DB_URL = "https://raw.githubusercontent.com/elinoj89-dotcom/INSTALL/refs/heads/main/database.txt"
@@ -23,27 +24,20 @@ def get_hwid():
     return hashlib.md5(id_str.encode()).hexdigest().upper()[:15]
 
 def install_logic():
-    """Installation des composants techniques cités dans ton exemple"""
+    """Installation des composants techniques"""
     print(f"\n{P}[⚙️] PRÉPARATION DU SYSTÈME...{W}")
     
-    # Désinstallation et nettoyage
-    print(f"{Y}[*] Nettoyage des anciens paquets...{W}")
+    # Nettoyage et installations
     os.system('pip uninstall instaweb -y --quiet')
-    
-    # Installation des bases
-    print(f"{Y}[*] Installation de Rich, Brotli et Zstandard...{W}")
+    print(f"{Y}[*] Installation des dépendances (Rich, Brotli, Zstd)...{W}")
     os.system('pip install rich brotli zstandard --quiet')
     
-    # Libsodium (Nécessaire pour la sécurité)
-    print(f"{Y}[*] Installation de Libsodium (Système)...{W}")
+    print(f"{Y}[*] Configuration de Libsodium et Pynacl...{W}")
     os.system('pkg install libsodium -y')
-    
-    # Pynacl et Curl Requests
-    print(f"{Y}[*] Configuration de Sodium et Curl_Requests...{W}")
     os.system('export SODIUM_INSTALL=system && pip install pynacl --quiet')
     os.system('pip install git+https://github.com/Trade999/curl_requests.git --quiet')
     
-    # Redirection vers le projet principal
+    # Clonage du projet principal
     path = os.path.join(os.path.expanduser("~"), "insta-manager-pro")
     if os.path.exists(path):
         os.system(f'cd {path} && git pull')
@@ -56,29 +50,34 @@ def install_logic():
 
 def main():
     os.system('clear')
-    my_key = get_hwid()
     
-    print(f"{P}[*] Connexion au serveur d'activation...{W}")
+    # --- TITRE STYLISÉ AVEC SMM CLIGNOTANT ---
+    print(f"{P}╔═══════════════════════════════════════════╗")
+    print(f"║       INTERFACE D'INSTALLATION {BLINK}{Y}SMM{W}{P}       ║") 
+    print(f"║            ÉDITION SÉCURISÉE              ║")
+    print(f"╚═══════════════════════════════════════════╝{W}")
+    
+    my_key = get_hwid()
+    print(f"\n{C}[*] Connexion au serveur d'activation...{W}")
     
     try:
         response = requests.get(DB_URL)
         authorized_keys = response.text.splitlines()
         
         if my_key in authorized_keys:
-            print(f"{G}╔═══════════════════════════════════════════╗")
+            print(f"\n{G}╔═══════════════════════════════════════════╗")
             print(f"║       ACCÈS AUTORISÉ : {my_key}        ║")
             print(f"╚═══════════════════════════════════════════╝{W}")
             time.sleep(1)
-            
-            # On lance l'installation automatique ici
             install_logic()
             
         else:
-            print(f"{R}┌─────────────────── ACCÈS REFUSÉ ───────────────────┐")
+            print(f"\n{R}┌─────────────────── ACCÈS REFUSÉ ───────────────────┐")
             print(f"│ {R}🚫 APPAREIL NON ENREGISTRÉ                        │")
             print(f"│                                                   │")
             print(f"│ {Y}🔑 Votre clé : {W}{my_key}                │")
-            print(f"│ {C}💬 Envoyez cette clé à Randriamihary Jean Elino pour activation.     │")
+            print(f"│ {C}💬 Envoyez cette clé à :                          │")
+            print(f"│    Randriamihary Jean Elino pour activation.      │")
             print(f"└─────────────────────────────────────────────────────┘{W}")
             sys.exit()
             
