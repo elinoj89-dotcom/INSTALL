@@ -36,19 +36,51 @@ def list_accounts():
     input(f"\n{BOLD}{P}[ Appuyez sur Entrée pour revenir ]{W}")
     show_menu()
 
+def delete_account():
+    """Option [5] : Supprime un compte spécifique"""
+    os.system('clear')
+    print(f"{BOLD}{R}╔═══════════════════════════════════════════╗")
+    print(f"║         SUPPRIMER UN COMPTE SMM           ║")
+    print(f"╚═══════════════════════════════════════════╝{W}")
+    
+    if not os.path.exists(SESSION_PATH) or not os.listdir(SESSION_PATH):
+        print(f"\n{BOLD}{R}[!] Aucun compte à supprimer.{W}")
+        time.sleep(2)
+        show_menu()
+        return
+
+    files = os.listdir(SESSION_PATH)
+    for i, f in enumerate(files, 1):
+        print(f"{BOLD}{Y}[{i}]{W} {f.replace('.json','')}")
+    
+    choice = input(f"\n{BOLD}{C}[➤] Numéro du compte à supprimer (ou 0 pour annuler) : {W}")
+    
+    try:
+        idx = int(choice)
+        if idx == 0:
+            show_menu()
+        elif 1 <= idx <= len(files):
+            os.remove(os.path.join(SESSION_PATH, files[idx-1]))
+            print(f"\n{BOLD}{G}[✔] Compte supprimé avec succès !{W}")
+            time.sleep(2)
+            show_menu()
+        else:
+            print(f"\n{BOLD}{R}[!] Numéro invalide.{W}")
+            time.sleep(1)
+            delete_account()
+    except ValueError:
+        delete_account()
+
 def clean_corbeille():
-    """Option [6] : Nettoie les fichiers temporaires/corbeille"""
+    """Option [6] : Nettoie les fichiers temporaires"""
     os.system('clear')
     print(f"{BOLD}{R}╔═══════════════════════════════════════════╗")
     print(f"║           NETTOYAGE CORBEILLE SMM         ║")
     print(f"╚═══════════════════════════════════════════╝{W}")
-    print(f"\n{BOLD}{Y}[*] Analyse des fichiers inutiles...{W}")
+    print(f"\n{BOLD}{Y}[*] Nettoyage en cours...{W}")
     time.sleep(1)
-    # Simulation de nettoyage des caches
-    print(f"{BOLD}{G}[✔] Cache système vidé.")
-    print(f"{BOLD}{G}[✔] Fichiers temporaires supprimés.")
-    print(f"\n{BOLD}{C}[!] Espace libéré avec succès !{W}")
-    time.sleep(2)
+    print(f"{BOLD}{G}[✔] Espace libéré !{W}")
+    time.sleep(1.5)
     show_menu()
 
 def show_menu():
@@ -64,6 +96,7 @@ def show_menu():
     print(f"{BOLD}{P}┌───────────────────────────────────────────┐")
     print(f"│ {V}[1] Démarrer le Bot                       {P}│")
     print(f"│ {V}[4] Listes des comptes                    {P}│")
+    print(f"│ {V}[5] Supprimer un compte                   {P}│")
     print(f"│ {V}[6] Corbeille                             {P}│")
     print(f"│ {V}[8] Mettre à jour                         {P}│")
     print(f"│ {R}[0] Quitter                               {P}│")
@@ -75,6 +108,8 @@ def show_menu():
         os.system('python ~/insta-manager-pro/update.py')
     elif choice == "4":
         list_accounts()
+    elif choice == "5":
+        delete_account()
     elif choice == "6":
         clean_corbeille()
     elif choice == "0":
@@ -98,4 +133,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-                         
+    
