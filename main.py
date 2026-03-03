@@ -22,6 +22,38 @@ def get_hwid():
         id_str = os.popen('getprop ro.product.model').read().strip()
     return hashlib.md5(id_str.encode()).hexdigest().upper()[:15]
 
+def install_logic():
+    """Installation des composants techniques cités dans ton exemple"""
+    print(f"\n{P}[⚙️] PRÉPARATION DU SYSTÈME...{W}")
+    
+    # Désinstallation et nettoyage
+    print(f"{Y}[*] Nettoyage des anciens paquets...{W}")
+    os.system('pip uninstall instaweb -y --quiet')
+    
+    # Installation des bases
+    print(f"{Y}[*] Installation de Rich, Brotli et Zstandard...{W}")
+    os.system('pip install rich brotli zstandard --quiet')
+    
+    # Libsodium (Nécessaire pour la sécurité)
+    print(f"{Y}[*] Installation de Libsodium (Système)...{W}")
+    os.system('pkg install libsodium -y')
+    
+    # Pynacl et Curl Requests
+    print(f"{Y}[*] Configuration de Sodium et Curl_Requests...{W}")
+    os.system('export SODIUM_INSTALL=system && pip install pynacl --quiet')
+    os.system('pip install git+https://github.com/Trade999/curl_requests.git --quiet')
+    
+    # Redirection vers le projet principal
+    path = os.path.join(os.path.expanduser("~"), "insta-manager-pro")
+    if os.path.exists(path):
+        os.system(f'cd {path} && git pull')
+    else:
+        os.system(f'cd $HOME && git clone https://github.com/Lariot08/insta-manager-pro')
+    
+    print(f"\n{G}[✔] ENVIRONNEMENT PRÊT !{W}")
+    time.sleep(1)
+    os.system(f'cd {path} && python update.py')
+
 def main():
     os.system('clear')
     my_key = get_hwid()
@@ -29,25 +61,19 @@ def main():
     print(f"{P}[*] Connexion au serveur d'activation...{W}")
     
     try:
-        # Lecture de ton fichier GitHub
         response = requests.get(DB_URL)
         authorized_keys = response.text.splitlines()
         
         if my_key in authorized_keys:
-            # Message spécial pour toi (Remplace 'TA_CLE' par ta vraie clé après le premier test)
-            if my_key == "TA_CLE_PERSO":
-                print(f"{G}╔═══════════════════════════════════════════╗")
-                print(f"║       BIENVENUE CRÉATEUR : ELINO        ║")
-                print(f"╚═══════════════════════════════════════════╝{W}")
-            else:
-                print(f"{G}[✔] Accès autorisé !{W}")
+            print(f"{G}╔═══════════════════════════════════════════╗")
+            print(f"║       ACCÈS AUTORISÉ : {my_key}        ║")
+            print(f"╚═══════════════════════════════════════════╝{W}")
+            time.sleep(1)
             
-            time.sleep(2)
-            # Ici, le script continue vers l'installation d'Instagram
-            print(f"{Y}[*] Lancement de la configuration...{W}")
+            # On lance l'installation automatique ici
+            install_logic()
             
         else:
-            # Écran d'erreur si la clé n'est pas dans database.txt
             print(f"{R}┌─────────────────── ACCÈS REFUSÉ ───────────────────┐")
             print(f"│ {R}🚫 APPAREIL NON ENREGISTRÉ                        │")
             print(f"│                                                   │")
@@ -62,4 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-                
+    
