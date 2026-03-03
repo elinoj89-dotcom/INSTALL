@@ -42,6 +42,21 @@ def show_others():
     input(f"\n{P}[ Appuyez sur Entrée pour revenir ]{W}")
     show_menu()
 
+def copy_key():
+    """Affiche la clé pour faciliter la copie (Option 7)"""
+    os.system('clear')
+    my_key = get_hwid()
+    print(f"{P}╔═══════════════════════════════════════════╗")
+    print(f"║           RÉCUPÉRATION DE CLÉ             ║")
+    print(f"╚═══════════════════════════════════════════╝{W}")
+    print(f"\n{Y}[!] Voici votre clé unique :{W}")
+    print(f"\n{G}>> {W}{my_key}{G} <<{W}")
+    print(f"\n{C}[i] Maintenez votre doigt sur la clé pour la copier")
+    print(f"    puis envoyez-la au développeur.{W}")
+    
+    input(f"\n{P}[ Appuyez sur Entrée pour revenir ]{W}")
+    show_menu()
+
 def list_accounts():
     """Affiche les comptes enregistrés (Option 4)"""
     os.system('clear')
@@ -83,6 +98,7 @@ def show_menu():
     print(f"\n{G}[1] Démarrer le Bot")
     print(f"{G}[4] Listes des comptes")
     print(f"{G}[5] Supprimer un compte")
+    print(f"{G}[7] Récupérer ma clé")
     print(f"{G}[9] Autres (Tarifs & Contact)")
     print(f"{R}[0] Quitter{W}")
     
@@ -94,6 +110,8 @@ def show_menu():
         list_accounts()
     elif choice == "5": 
         delete_account()
+    elif choice == "7":
+        copy_key()
     elif choice == "9":
         show_others()
     elif choice == "0": 
