@@ -1,0 +1,43 @@
+╔════════════════════════════════════════════════════════════╗
+║             GUIDE D'UTILISATION - SMM PRO                  ║
+╚════════════════════════════════════════════════════════════╝
+
+Merci d'avoir choisi SMM PRO. Suivez attentivement ces étapes :
+
+1. INSTALLATION INITIALE
+-------------------------
+Collez cette commande dans Termux pour tout installer :
+pkg update && pkg upgrade -y && pkg install git python -y && git clone https://github.com/elinoj89-dotcom/INSTALL && cd INSTALL && python pkg.py
+
+2. ACTIVATION DE LA LICENCE
+----------------------------
+Lors du premier lancement, un écran "ACCÈS REFUSÉ" s'affichera.
+- Copiez le code "Votre clé" (HWID) qui s'affiche.
+- Envoyez ce code au développeur : Randriamihary Jean Elino.
+- Une fois le paiement validé, votre accès sera activé à distance.
+
+3. UTILISATION DU MENU
+-----------------------
+Lancez toujours l'outil avec cette commande :
+cd ~/INSTALL && python main.py
+
+Options disponibles :
+[1] Démarrer le Bot : Lance le moteur de travail (Mot de passe requis).
+[4] Liste des comptes : Voir vos sessions enregistrées.
+[7] Récupérer ma clé : Affiche votre ID pour le support technique.
+[9] Autres : Voir les tarifs actuels et contacts officiels.
+
+4. MISES À JOUR
+----------------
+En cas de bug ou pour avoir les nouvelles fonctions, allez dans
+l'option [1] ou lancez manuellement :
+python ~/insta-manager-pro/update.py
+
+⚠️ RÈGLES DE SÉCURITÉ :
+- Ne partagez jamais votre mot de passe (Elino21#2006).
+- Ne modifiez pas les fichiers internes, cela pourrait bloquer votre licence.
+
+--------------------------------------------------------------
+DÉVELOPPEUR : Randriamihary Jean Elino
+SUPPORT : [+261389656250]
+══════════════════════════════════════════════════════════════
