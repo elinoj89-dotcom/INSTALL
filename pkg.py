@@ -3,61 +3,77 @@ import time
 import sys
 import shutil
 
-# Couleurs Style Screenshot
-P = "\033[35m" # Violet
-G = "\033[32m" # Vert
-R = "\033[31m" # Rouge
-W = "\033[0m"  # Blanc
-Y = "\033[33m" # Jaune
+# Styles et Couleurs (STYLE GRAS)
+BOLD = "\033[1m"
+P = "\033[1;35m" ; G = "\033[1;32m" ; Y = "\033[1;33m" 
+C = "\033[1;36m" ; B = "\033[1;34m" ; R = "\033[1;31m" ; W = "\033[1;37m"
 
 def banner():
     os.system('clear')
-    print(f"{P}┌───────────────────────────────────────────┐")
-    print(f"│            ELINO SYSTEM MANAGER           │")
-    print(f"└───────────────────────────────────────────┘{W}")
-    print(f"{G}(✓) Github    = elinoj89-dotcom")
-    print(f"(✓) Tool Name = INSTALL{W}")
-    print("-" * 45)
+    print(f"{BOLD}{B}╔═══════════════════════════════════════════╗")
+    print(f"║       SMM PRO - GESTIONNAIRE SYSTÈME      ║")
+    print(f"║           DEVELOPPER BY ELINO             ║")
+    print(f"╚═══════════════════════════════════════════╝{W}")
 
 def uninstall_system():
-    print(f"\n{R}[!] Suppression du système en cours...{W}")
+    print(f"\n{BOLD}{R}╔════════════════ ATTENTION ════════════════╗")
+    print(f"║      SUPPRESSION DU SYSTÈME EN COURS      ║")
+    print(f"╚═══════════════════════════════════════════╝{W}")
+    
     path_bot = os.path.join(os.path.expanduser("~"), "insta-manager-pro")
-    path_install = os.path.join(os.path.expanduser("~"), "INSTALL")
     
-    # Supprime le bot
     if os.path.exists(path_bot):
+        print(f"\n{BOLD}{Y}[*] Nettoyage du moteur de bot...{W}")
         shutil.rmtree(path_bot)
-        print(f"{G}[✔] Dossier insta-manager-pro supprimé.{W}")
+        print(f"{BOLD}{G}[✔] Dossier insta-manager-pro supprimé.{W}")
     
-    print(f"{Y}[?] Voulez-vous aussi supprimer l'installeur ? (y/n) : {W}", end="")
-    confirm = input()
+    confirm = input(f"\n{BOLD}{Y}[?] Supprimer aussi l'installeur ? (y/n) : {W}{BOLD}")
     if confirm.lower() == 'y':
-        print(f"{G}[✔] Nettoyage complet. Merci d'avoir utilisé Elino System.{W}")
-        print(f"{R}[!] Note: Vous devrez supprimer manuellement le dossier INSTALL avec 'rm -rf ~/INSTALL'{W}")
+        print(f"\n{BOLD}{G}[✔] Nettoyage complet effectué.{W}")
+        print(f"{BOLD}{R}[!] Tapez 'rm -rf ~/INSTALL' pour finir.{W}")
         time.sleep(2)
         sys.exit()
 
+def install_process():
+    print(f"\n{BOLD}{Y}[*] Préparation de l'environnement...{W}")
+    
+    # Liste des paquets à installer
+    packages = [
+        ("Mise à jour système", "pkg update -y && pkg upgrade -y"),
+        ("Python & Git", "pkg install python git -y"),
+        ("Termux API", "pkg install termux-api -y"),
+        ("Instaloader", "pip install instaloader"),
+        ("Requests", "pip install requests")
+    ]
+
+    for name, cmd in packages:
+        print(f"\n{BOLD}{C}───────────────────────────────────────────")
+        print(f"{BOLD}{B}[▶] Installation : {W}{BOLD}{name}")
+        os.system(cmd)
+        print(f"{BOLD}{G}[✔] Terminé.{W}")
+
+    print(f"\n{BOLD}{G}[✔] CONFIGURATION RÉUSSIE !{W}")
+    time.sleep(2)
+    os.system('python main.py')
+
 def main():
     banner()
-    print(f"{W}[1] {G}Lancer / Installer SMM{W}")
-    print(f"{W}[2] {R}Désinstaller SMM (Nettoyage){W}")
-    print(f"{W}[0] EXIT")
+    print(f"{BOLD}{P}┌───────────────────────────────────────────┐")
+    print(f"│ {V}[1] Installer / Lancer SMM PRO            {P}│")
+    print(f"│ {R}[2] Désinstaller (Nettoyage)              {P}│")
+    print(f"│ {W}[0] Quitter                               {P}│")
+    print(f"└───────────────────────────────────────────┘{W}")
     
-    choice = input(f"\n{Y}[?] Choice: {W}")
+    choice = input(f"\n{BOLD}{B}[➤] Choix : {W}{BOLD}")
     
     if choice == "1":
-        print(f"\n{G}[*] Lancement de la procédure...{W}")
-        time.sleep(1)
-        os.system('python main.py')
+        install_process()
     elif choice == "2":
         uninstall_system()
     elif choice == "0":
         sys.exit()
     else:
-        print(f"{R}[✘] Choix invalide.{W}")
-        time.sleep(1)
         main()
 
-if __name__ == "__main__":
-    main()
-    
+if __
+        
