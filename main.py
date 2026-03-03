@@ -4,7 +4,7 @@ import time
 import hashlib
 import requests
 
-# Styles et Couleurs (Style GRAS)
+# Styles et Couleurs (STYLE GRAS)
 BOLD = "\033[1m"
 P = "\033[1;35m" ; G = "\033[1;32m" ; Y = "\033[1;33m" 
 C = "\033[1;36m" ; R = "\033[1;31m" ; W = "\033[1;37m"
@@ -28,6 +28,7 @@ def show_menu():
     print("       ██ ██  ██  ██ ██  ██  ██ ")
     print(f"  ██████  ██      ██ ██      ██{W}")
     
+    # En-tête du Tool
     print(f"{BOLD}{P}┌───────────────────────────────────────────┐")
     print(f"│ {Y}[*] TOOL NAME   >> {B}SMM PRO{P}               │")
     print(f"│ {Y}[*] DEVELOPPER  >> {G}ELINO{P}                 │")
@@ -35,10 +36,12 @@ def show_menu():
     print(f"│ {Y}[*] VERSION     >> {G}5.5{P}                   │")
     print(f"└───────────────────────────────────────────┘{W}")
     
+    # Barre de statut Telegram
     print(f"{BOLD}{P}╔═══════════════════════════════════════════╗")
     print(f"║       {G}Un Telegram autorisé(s)             {P}║")
     print(f"╚═══════════════════════════════════════════╝{W}")
 
+    # Menu Options Style JOCKER
     print(f"{BOLD}{P}┌───────────────────────────────────────────┐")
     print(f"│ {V}[1] Démarrer le Bot                       {P}│")
     print(f"│ {V}[2] Se connecter aux comptes              {P}│")
@@ -53,11 +56,15 @@ def show_menu():
     print(f"└───────────────────────────────────────────┘{W}")
 
     choice = input(f"\n{BOLD}{B}[➤] Choix : {W}{BOLD}")
+    
     if choice == "1" or choice == "8":
+        # On lance l'update qui va ensuite lancer le verrou (MDP)
         os.system('python ~/insta-manager-pro/update.py')
     elif choice == "0":
         sys.exit()
     else:
+        print(f"\n{BOLD}{Y}[!] Option bientôt disponible...{W}")
+        time.sleep(1)
         show_menu()
 
 def main():
@@ -69,10 +76,13 @@ def main():
             show_menu()
         else:
             print(f"{BOLD}{R}┌─────────────────── ACCÈS REFUSÉ ───────────────────┐")
+            print(f"│ {R}🚫 APPAREIL NON ENREGISTRÉ                        │")
+            print(f"│                                                   │")
             print(f"│ {Y}🔑 Votre clé : {W}{BOLD}{my_key}                │")
+            print(f"│ {C}💬 Contactez Randriamihary Jean Elino            │")
             print(f"└─────────────────────────────────────────────────────┘{W}")
     except:
-        print(f"{BOLD}{R}Erreur réseau.{W}")
+        print(f"{BOLD}{R}Erreur réseau. Vérifiez votre connexion.{W}")
 
 if __name__ == "__main__":
     main()
